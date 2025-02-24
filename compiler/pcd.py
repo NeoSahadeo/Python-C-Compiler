@@ -2,6 +2,7 @@
 # by Neo Sahadeo
 # RtD
 
+from enum import Enum
 import argparse
 import logging
 import datetime
@@ -12,7 +13,29 @@ file_log = f"pcd_{datetime.date.today()}_{datetime.datetime.now().time()}".repla
 logger = logging.getLogger(__name__)
 
 
-def read_file(file, block_size=10000):
+class Token(Enum):
+    ...
+
+
+def tokeniser(tokens):
+    """
+    Creates token objects from token array.
+
+    :param [] tokens: token list
+    :returns [] token_objects: token objects
+    """
+
+
+def read_file(file, block_size=10_000):
+    """
+    Reads in data stream from a file and yields the
+    data in blocks.
+
+    :param str file: file stream
+    :param optional int file: block size (DEFAULT=10_000)
+
+    :yields block: lines of file stream
+    """
     logger.info(f"reading in block: max block_size: {block_size}")
     block = []
     for line in file:
@@ -25,13 +48,13 @@ def read_file(file, block_size=10000):
     yield block  # Return if block_size isn't reached
 
 
-def lexer(file: str) -> list | int:
+def lexer(file):
     """
     Lexer function that tokenises the inputfile.
 
-    :param string file: file location
+    :param str file: file location
 
-    :returns: tokens array | int
+    :returns [token]: token array
     :raises FileNotFoundError: file parameter does not exist
     """
     logger.info("running lexer")
